@@ -30,4 +30,8 @@ public class PageFactoryManager {
     public RegistrationPage getRegistrationPage() {
         return new RegistrationPage(driver);
     }
+
+    public HomePageWithNewDeliveryCountry getHomePageWithNewDeliveryCountry() {
+        return new HomePageWithNewDeliveryCountry(driver);
+    }
 }

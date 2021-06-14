@@ -13,9 +13,11 @@ import pages.*;
 
 import static io.github.bonigarcia.wdm.WebDriverManager.chromedriver;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DefinitionSteps {
 
+    private static final long DEFAULT_TIMEOUT = 30;
     WebDriver driver;
     PageFactoryManager pageFactoryManager;
     HomePage homePage;
@@ -23,6 +25,7 @@ public class DefinitionSteps {
     LoginPasswordPage loginPasswordPage;
     ErrorResultsPage errorResultsPage;
     RegistrationPage registrationPage;
+    HomePageWithNewDeliveryCountry homePageWithNewDeliveryCountry;
 
     @Before
     public void testsSetUp() {
@@ -92,11 +95,6 @@ public class DefinitionSteps {
         registrationPage.enterEmail(email);
     }
 
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
     @And("User enters password {string}")
     public void enterPasswordOnRegistrationPage(final String password) {
         registrationPage.enterPassword(password);
@@ -121,5 +119,38 @@ public class DefinitionSteps {
     @When("User clicks on 'Deliver to' button")
     public void clickOnDeliverToButton() {
         homePage.clickOnDeliverToButton();
+    }
+
+    @And("User checks that 'Choose your location' popup is visible")
+    public void checkThatChooseYourLocationPopupIsVisible() {
+        homePage.waitVisibilityOfElement(DEFAULT_TIMEOUT, homePage.getDropDownListOfCountries());
+        assertTrue(homePage.isChooseLocationPopupVisible());
+    }
+
+    @And("User clicks on drop-down list with countries")
+    public void clickOnDropDownListWithCountries() {
+        homePage.clickOnDropDownListOfCountries();
+    }
+
+    @And("User clicks on country 'Sweden'")
+    public void clickOnCountrySweden() {
+        homePage.clickOnCountrySwedenInDropDownList();
+    }
+
+    @And("User clicks on 'Done' button")
+    public void clickOnDoneButton() {
+        homePage.clickOnDoneButton();
+    }
+
+    @After
+    public void tearDown() {
+        driver.quit();
+    }
+
+    @Then("User checks that chosen country {string} is written under 'Deliver to' title on {string} page")
+    public void checkThatChosenCountryIsWrittenUnderDeliverToTitleOnHomePagePage(final String expectedCountryName, final String url) {
+        homePageWithNewDeliveryCountry = pageFactoryManager.getHomePageWithNewDeliveryCountry();
+        homePageWithNewDeliveryCountry.openHomePage(url);
+        assertEquals(expectedCountryName, homePageWithNewDeliveryCountry.getDeliveryCountryName());
     }
 }

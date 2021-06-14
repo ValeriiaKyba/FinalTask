@@ -10,7 +10,7 @@ Feature: Delivery Country
     And User clicks on drop-down list with countries
     And User clicks on country 'Sweden'
     And User clicks on 'Done' button
-    Then User checks that chosen country '<country>' is written under 'Deliver to' title
+    Then User checks that chosen country '<country>' is written under 'Deliver to' title on '<homePage>' page
 
     Examples:
       | homePage                | country |

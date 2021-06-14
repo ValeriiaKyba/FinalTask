@@ -18,8 +18,17 @@ public class HomePage extends BasePage{
     @FindBy(xpath = "//a[contains(@id, 'global-location')]")
     private WebElement deliverToButton;
 
-    @FindBy(xpath = "//div[contains(@class, 'popover-wrapper')]")
+    @FindBy(xpath = "//div[@role='dialog']//div[contains(@class, 'popover-wrapper')]")
     private WebElement chooseLocationPopup;
+
+    @FindBy(xpath = "//span[@id='GLUXCountryListDropdown']")
+    private WebElement dropDownListOfCountries;
+
+    @FindBy(xpath = "//a[contains(@data-value, 'SE')]")
+    private WebElement countrySwedenInDropDownList;
+
+    @FindBy(xpath = "//button[@name='glowDoneButton']")
+    private WebElement doneButton;
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -45,7 +54,23 @@ public class HomePage extends BasePage{
         deliverToButton.click();
     }
 
-    public boolean isChooseLocationPopup() {
+    public WebElement getDropDownListOfCountries() {
+        return dropDownListOfCountries;
+    }
+
+    public boolean isChooseLocationPopupVisible() {
         return chooseLocationPopup.isDisplayed();
+    }
+
+    public void clickOnDropDownListOfCountries() {
+        dropDownListOfCountries.click();
+    }
+
+    public void clickOnCountrySwedenInDropDownList() {
+        countrySwedenInDropDownList.click();
+    }
+
+    public void clickOnDoneButton() {
+        doneButton.click();
     }
 }
