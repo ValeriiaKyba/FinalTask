@@ -8,6 +8,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import manager.PageFactoryManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import pages.*;
 
@@ -26,6 +27,7 @@ public class DefinitionSteps {
     ErrorResultsPage errorResultsPage;
     RegistrationPage registrationPage;
     HomePageWithNewDeliveryCountry homePageWithNewDeliveryCountry;
+    SearchResultsPage searchResultsPage;
 
     @Before
     public void testsSetUp() {
@@ -142,15 +144,39 @@ public class DefinitionSteps {
         homePage.clickOnDoneButton();
     }
 
-    @After
-    public void tearDown() {
-        driver.quit();
-    }
-
     @Then("User checks that chosen country {string} is written under 'Deliver to' title on {string} page")
     public void checkThatChosenCountryIsWrittenUnderDeliverToTitleOnHomePagePage(final String expectedCountryName, final String url) {
         homePageWithNewDeliveryCountry = pageFactoryManager.getHomePageWithNewDeliveryCountry();
         homePageWithNewDeliveryCountry.openHomePage(url);
         assertEquals(expectedCountryName, homePageWithNewDeliveryCountry.getDeliveryCountryName());
+    }
+
+    @And("User checks search field visibility")
+    public void checkSearchFieldVisibility() {
+        homePage.isSearchFieldVisible();
+    }
+
+    @When("User makes search by keyword {string}")
+    public void makeSearchByKeyword(final String keyword) {
+        homePage.enterProductNameInSearchField(keyword);
+    }
+
+    @And("User clicks on search button")
+    public void clickOnSearchButton() {
+        homePage.clickOnSearchButton();
+    }
+
+    @Then("User checks that products names, which are shown on Search Results page, match entered {string}")
+    public void checkThatProductsNamesWhichAreShownOnSearchResultsPageMatchEnteredKeyword(final String expectedNameOfProduct) {
+        searchResultsPage = pageFactoryManager.getSearchResultsPage();
+        searchResultsPage.waitForPageLoadComplete(DEFAULT_TIMEOUT);
+        for (WebElement nameOfProduct : searchResultsPage.getTitlesOfSearchedProducts()) {
+            assertTrue(nameOfProduct.getText().contains(expectedNameOfProduct));
+        }
+    }
+
+    @After
+    public void tearDown() {
+        driver.quit();
     }
 }

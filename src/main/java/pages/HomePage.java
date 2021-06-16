@@ -30,6 +30,12 @@ public class HomePage extends BasePage{
     @FindBy(xpath = "//button[@name='glowDoneButton']")
     private WebElement doneButton;
 
+    @FindBy(xpath = "//input[@id='twotabsearchtextbox']")
+    private WebElement searchField;
+
+    @FindBy(xpath = "//input[contains(@id, 'twotabsearchtextbox')]")
+    private WebElement searchButton;
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
@@ -72,5 +78,18 @@ public class HomePage extends BasePage{
 
     public void clickOnDoneButton() {
         doneButton.click();
+    }
+
+    public boolean isSearchFieldVisible() {
+        return searchField.isDisplayed();
+    }
+
+    public void enterProductNameInSearchField(final String keyword) {
+        searchField.clear();
+        searchField.sendKeys(keyword);
+    }
+
+    public void clickOnSearchButton() {
+        searchButton.click();
     }
 }

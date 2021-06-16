@@ -34,4 +34,8 @@ public class PageFactoryManager {
     public HomePageWithNewDeliveryCountry getHomePageWithNewDeliveryCountry() {
         return new HomePageWithNewDeliveryCountry(driver);
     }
+
+    public SearchResultsPage getSearchResultsPage() {
+        return new SearchResultsPage(driver);
+    }
 }
